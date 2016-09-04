@@ -11,8 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{07A05811-BA27-4085-A277-9A4AC9719C99}</ProjectGuid>
-    <RootNamespace>MachineLearning</RootNamespace>
+    <ProjectGuid>{FA081FB4-0502-49A4-A3DB-DD9C4D13A98E}</ProjectGuid>
+    <RootNamespace>XorSample</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -64,6 +64,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="XorSample.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
