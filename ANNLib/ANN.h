@@ -6,4 +6,7 @@
 #define ANNDSDLL_API __declspec(dllimport) 
 #endif
 
-ANNDSDLL_API int func();
+namespace ANN
+{
+	ANNDSDLL_API int func();
+}

@@ -1,6 +1,7 @@
 #include <ANN.h>
 
-int func()
+int ANN::func()
 {
 	return 13;
 }
+
