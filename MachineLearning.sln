@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XorSample", "XorSample\XorSample.vcxproj", "{FA081FB4-0502-49A4-A3DB-DD9C4D13A98E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C43879F6-1AF6-4F03-994F-F3F7F83C4898} = {C43879F6-1AF6-4F03-994F-F3F7F83C4898}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ANNLib", "ANNLib\ANNLib.vcxproj", "{C43879F6-1AF6-4F03-994F-F3F7F83C4898}"
 EndProject
