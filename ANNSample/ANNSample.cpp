@@ -6,8 +6,7 @@ using namespace ANN;
 int main()
 {
 	cout << "hello ANN!" << endl;
-	auto ann = CreateNeuralNetwork();
-	cout << ann->GetType().c_str() << " succesfully created!" << endl;
+	cout << GetTestString().c_str() << endl;
 	system("pause");
 	return 0;
 }
