@@ -6,8 +6,14 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ANNLib", "ANNLib\ANNLib.vcxproj", "{C43879F6-1AF6-4F03-994F-F3F7F83C4898}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ANNTrainer", "ANNTrainer\ANNTrainer.vcxproj", "{66E63D59-97DE-46B8-A1F2-672A72F75BC6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C43879F6-1AF6-4F03-994F-F3F7F83C4898} = {C43879F6-1AF6-4F03-994F-F3F7F83C4898}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ANNSample", "ANNSample\ANNSample.vcxproj", "{0CCA52E6-78C1-4BEE-9535-91E3ECB4F730}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C43879F6-1AF6-4F03-994F-F3F7F83C4898} = {C43879F6-1AF6-4F03-994F-F3F7F83C4898}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

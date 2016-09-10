@@ -79,4 +79,9 @@ namespace ANN
 		std::vector<int> & configuration = std::vector<int>(),
 		NeuralNetwork::ActivationType activation_type = NeuralNetwork::POSITIVE_SYGMOID
 	);
+
+	/**Тестовая функция для проверки подключения библиотеки
+	 *@return строка с поздравлениями
+	 */
+	ANNDLL_API std::string GetTestString();
 }

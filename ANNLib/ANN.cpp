@@ -111,3 +111,8 @@ float ANN::NeuralNetwork::ActivationDerivative(float activation)
 	}
 	return -1;
 }
+
+std::string ANN::GetTestString()
+{
+	return "You succesfully plug ANN library!";
+}
