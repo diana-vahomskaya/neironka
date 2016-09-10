@@ -4,7 +4,7 @@
 #include <iomanip>
 
 
-bool ANN::NeuralNetwork::Read(std::string filepath)
+bool ANN::NeuralNetwork::Load(std::string filepath)
 {
 	std::ifstream file(filepath);
 	if (!file.is_open()) return false;

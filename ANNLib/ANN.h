@@ -19,14 +19,22 @@ namespace ANN
 			POSITIVE_SYGMOID,
 			BIPOLAR_SYGMOID
 		};
-		/**Прочитать нейронную сеть из файла
-		 *@param
+		/**Прочитать нейронную сеть из файла. Сеть сохраняется вызовом метода Save
+		 *@param filepath - имя и путь до файла с сеткой
+		 *@return - успешность считывания
 		 */
-		virtual bool Read(std::string filepath);
+		virtual bool Load(std::string filepath);
+		/**Сохранить нейронную сеть в файл. Сеть сохраняется вызовом метода Load
+		 *@param filepath - имя и путь до файла с сеткой
+		 *@return - успешность сохранения
+		 */
 		virtual bool Save(std::string filepath);
+		/**Получить конфигурацию сети.
+		 *@return конфигурация сети - массив - в каждом элементе
+		 */
 		std::vector<int> GetConfiguration();
 
-		/**********************Это вам надо реализовать самим**********************/
+		/**********************ЭТО ВАМ НАДО РЕАЛИЗОВАТЬ САМИМ**********************/
 		virtual std::string GetType() = 0;
 		virtual std::vector<float> Predict(std::vector<float> & input) = 0;
 		virtual float MakeTrain(
@@ -34,9 +42,10 @@ namespace ANN
 			std::vector<std::vector<float>> & outputs,
 			int max_iters = 10000,
 			float eps = 0.1,
-			float speed = 0.1
+			float speed = 0.1,
+			bool std_dump = false
 		) = 0;
-
+		/***************************************************************************/
 	protected:
 		/**Веса сети*/
 		std::vector<std::vector<std::vector<float> > > weights;
