@@ -10,6 +10,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XorSample", "XorSample\XorS
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ANNLib", "ANNLib\ANNLib.vcxproj", "{C43879F6-1AF6-4F03-994F-F3F7F83C4898}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TicTacToe", "TicTacToe\TicTacToe.vcxproj", "{44FB402A-B486-4A55-BD8F-8D327546F1CF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ANNTrainer", "ANNTrainer\ANNTrainer.vcxproj", "{66E63D59-97DE-46B8-A1F2-672A72F75BC6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -17,13 +21,17 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{FA081FB4-0502-49A4-A3DB-DD9C4D13A98E}.Debug|Win32.ActiveCfg = Debug|Win32
-		{FA081FB4-0502-49A4-A3DB-DD9C4D13A98E}.Debug|Win32.Build.0 = Debug|Win32
 		{FA081FB4-0502-49A4-A3DB-DD9C4D13A98E}.Release|Win32.ActiveCfg = Release|Win32
-		{FA081FB4-0502-49A4-A3DB-DD9C4D13A98E}.Release|Win32.Build.0 = Release|Win32
 		{C43879F6-1AF6-4F03-994F-F3F7F83C4898}.Debug|Win32.ActiveCfg = Debug|Win32
 		{C43879F6-1AF6-4F03-994F-F3F7F83C4898}.Debug|Win32.Build.0 = Debug|Win32
 		{C43879F6-1AF6-4F03-994F-F3F7F83C4898}.Release|Win32.ActiveCfg = Release|Win32
 		{C43879F6-1AF6-4F03-994F-F3F7F83C4898}.Release|Win32.Build.0 = Release|Win32
+		{44FB402A-B486-4A55-BD8F-8D327546F1CF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{44FB402A-B486-4A55-BD8F-8D327546F1CF}.Release|Win32.ActiveCfg = Release|Win32
+		{66E63D59-97DE-46B8-A1F2-672A72F75BC6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{66E63D59-97DE-46B8-A1F2-672A72F75BC6}.Debug|Win32.Build.0 = Debug|Win32
+		{66E63D59-97DE-46B8-A1F2-672A72F75BC6}.Release|Win32.ActiveCfg = Release|Win32
+		{66E63D59-97DE-46B8-A1F2-672A72F75BC6}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

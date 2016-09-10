@@ -72,9 +72,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ANN.h" />
+    <ClInclude Include="BackPropTrainedANN.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ANN.cpp" />
+    <ClCompile Include="BackPropTrainedANN.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
