@@ -20,17 +20,17 @@ namespace ANN
 			BIPOLAR_SYGMOID
 		};
 		/**Прочитать нейронную сеть из файла. Сеть сохраняется вызовом метода Save
-		 *@param filepath - имя и путь до файла с сеткой
-		 *@return - успешность считывания
+		 * @param filepath - имя и путь до файла с сеткой
+		 * @return - успешность считывания
 		 */
 		virtual bool Load(std::string filepath);
 		/**Сохранить нейронную сеть в файл. Сеть сохраняется вызовом метода Load
-		 *@param filepath - имя и путь до файла с сеткой
-		 *@return - успешность сохранения
+		 * @param filepath - имя и путь до файла с сеткой
+		 * @return - успешность сохранения
 		 */
 		virtual bool Save(std::string filepath);
 		/**Получить конфигурацию сети.
-		 *@return конфигурация сети - массив - в каждом элементе
+		 * @return конфигурация сети - массив - в каждом элементе
 		 */
 		std::vector<int> GetConfiguration();
 
@@ -38,7 +38,7 @@ namespace ANN
 		/**********************ЭТО ВАМ НАДО РЕАЛИЗОВАТЬ САМИМ**********************/
 		/**************************************************************************/
 		/**Получить строку с типом сети
-		 *@return описание сети
+		 * @return описание сети
 		 */
 		virtual std::string GetType() = 0;
 		/**Спрогнозировать выход по заданному входу
@@ -79,19 +79,19 @@ namespace ANN
 		/**Тип активационной функции*/
 		ActivationType activation_type;
 		/**Вычислить значение активационной функции
-		 *@param neuron_input - входное значение нейрона
-		 *@return - значение активационной фунции
+		 * @param neuron_input - входное значение нейрона
+		 * @return - значение активационной фунции
 		 */
 		float Activation(float neuron_input);
 		/**Вычислить значение производной активационной функции
-		 *@param activation - значение активационной фнункции, для которой хотим вычислить производную
-		 *@return - значение производной активационной фунции
+		 * @param activation - значение активационной фнункции, для которой хотим вычислить производную
+		 * @return - значение производной активационной фунции
 		 */
 		float ActivationDerivative(float activation);
 	};
 
 	/**Создать нейронную сеть
-	 *@param configuration - конфигурация нейронной сети
+	 * @param configuration - конфигурация нейронной сети
 	 */
 	ANNDLL_API std::shared_ptr<ANN::NeuralNetwork> CreateNeuralNetwork(
 		std::vector<int> & configuration = std::vector<int>(),
@@ -99,7 +99,31 @@ namespace ANN
 	);
 
 	/**Тестовая функция для проверки подключения библиотеки
-	 *@return строка с поздравлениями
+	 * @return строка с поздравлениями
 	 */
 	ANNDLL_API std::string GetTestString();
+
+	/**Считать данные из файла
+	 * @param filepath - путь и имя к файлу с данными.
+	 * @param inputs - буфер для записи входов
+	 * @param outputs - буфер для записи выходов
+	 * @return - успешность чтения
+	 */
+	ANNDLL_API bool LoadData(
+		std::string filepath,
+		std::vector<std::vector<float>> & inputs,
+		std::vector<std::vector<float>> & outputs
+	);
+
+	/**Записать данные в файл
+	* @param filepath - путь и имя к файлу с данными.
+	* @param inputs - входы для записи
+	* @param outputs - выходы для записи
+	* @return - успешность записи
+	*/
+	ANNDLL_API bool SaveData(
+		std::string filepath,
+		std::vector<std::vector<float>> & inputs,
+		std::vector<std::vector<float>> & outputs
+	);
 }

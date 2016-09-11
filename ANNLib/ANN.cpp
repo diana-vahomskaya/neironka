@@ -85,6 +85,109 @@ bool ANN::NeuralNetwork::Save(std::string filepath)
 	return true;
 }
 
+bool ANN::LoadData(
+	std::string filepath,
+	std::vector<std::vector<float>> & inputs,
+	std::vector<std::vector<float>> & outputs)
+{
+	std::ifstream file(filepath);
+	if (!file.is_open()) return false;
+	int buffer;
+	const int CHAR_BUF_LEN = 100;
+	char char_buffer[CHAR_BUF_LEN];
+	file.getline(char_buffer, CHAR_BUF_LEN);
+	std::string string_buffer = std::string(char_buffer);
+	memset(char_buffer, 0, CHAR_BUF_LEN);
+	if (string_buffer != std::string("input_count:"))
+		throw "incorrect file format";
+	int input_count;
+	file >> input_count;
+	file.getline(char_buffer, CHAR_BUF_LEN);
+	file.getline(char_buffer, CHAR_BUF_LEN);
+	string_buffer = std::string(char_buffer);
+	memset(char_buffer, 0, CHAR_BUF_LEN);
+	if (string_buffer != std::string("output_count:"))
+		throw "incorrect file format";
+	int output_count;
+	file >> output_count;
+	file.getline(char_buffer, CHAR_BUF_LEN);
+	file.getline(char_buffer, CHAR_BUF_LEN);
+	string_buffer = std::string(char_buffer);
+	memset(char_buffer, 0, CHAR_BUF_LEN);
+	if (string_buffer != std::string("primer_count:"))
+		throw "incorrect file format";
+	int primer_count;
+	file >> primer_count;
+	file.getline(char_buffer, CHAR_BUF_LEN);
+	file.getline(char_buffer, CHAR_BUF_LEN);
+	string_buffer = std::string(char_buffer);
+	memset(char_buffer, 0, CHAR_BUF_LEN);
+	if (string_buffer != std::string("data:"))
+		throw "incorrect file format";
+	inputs.resize(primer_count);
+	outputs.resize(primer_count);
+	//цикл по примерам
+	for (int i = 0; i < primer_count; i++) {
+		inputs[i].resize(input_count);
+		//считываем входы
+		for (int j = 0; j < input_count; j++) {
+			file >> inputs[i][j];
+		}
+		file.getline(char_buffer, CHAR_BUF_LEN);
+		//считываем выходы
+		outputs[i].resize(output_count);
+		for (int j = 0; j < output_count; j++) {
+			file >> outputs[i][j];
+		}
+		file.getline(char_buffer, CHAR_BUF_LEN);
+		file.getline(char_buffer, CHAR_BUF_LEN);
+	}
+	file.close();
+	return true;
+}
+
+bool ANN::SaveData(
+	std::string filepath,
+	std::vector<std::vector<float>> & inputs,
+	std::vector<std::vector<float>> & outputs)
+{
+	if (inputs.size() != outputs.size())
+		throw "input size and output size must be the same";
+	if (inputs.size() * outputs.size() == 0)
+		throw "empty data";
+	size_t input_count = inputs[0].size();
+	size_t output_count = outputs[0].size();
+	for (size_t i = 0; i < inputs.size(); i++) {
+		if (inputs[i].size() != input_count)
+			throw "incorrect input size";
+		if (outputs[i].size() != output_count)
+			throw "incorrect output size";
+	}
+	std::ofstream file(filepath);
+	if (!file.is_open()) return false;
+	file << std::setprecision(9);
+	file << "input_count:" << std::endl;
+	file << inputs[0].size() << std::endl;
+	file << "output_count:" << std::endl;
+	file << outputs[0].size() << std::endl;
+	file << "primer_count:" << std::endl;
+	file << inputs.size() << std::endl;
+	file << "data:" << std::endl;
+	for (int i = 0; i < inputs.size(); i++) {
+		for (int j = 0; j < input_count; j++) {
+			file << inputs[i][j] << "\t";
+		}
+		file << std::endl;
+		for (int j = 0; j < output_count; j++) {
+			file << outputs[i][j] << "\t";
+		}
+		file << std::endl;
+		file << std::endl;
+	}
+	file.close();
+	return true;
+}
+
 std::vector<int> ANN::NeuralNetwork::GetConfiguration()
 {
 	return configuration;
