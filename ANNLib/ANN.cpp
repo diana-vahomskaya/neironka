@@ -14,7 +14,7 @@ bool ANN::NeuralNetwork::Load(std::string filepath)
 	file.getline(char_buffer, CHAR_BUF_LEN);
 	std::string string_buffer = std::string(char_buffer);
 	memset(char_buffer, 0, CHAR_BUF_LEN);
-	if (string_buffer != std::string("activation type:")) 
+	if (string_buffer != std::string("activation type:"))
 		throw "incorrect file format";
 	file >> buffer;
 	activation_type = (ActivationType)buffer;
@@ -29,7 +29,7 @@ bool ANN::NeuralNetwork::Load(std::string filepath)
 	file.getline(char_buffer, CHAR_BUF_LEN);
 	string_buffer = std::string(char_buffer);
 	memset(char_buffer, 0, CHAR_BUF_LEN);
-	if (string_buffer != std::string("configuration:")) 
+	if (string_buffer != std::string("configuration:"))
 		throw "incorrect file format";
 	file >> buffer;
 	configuration.resize(buffer);
@@ -42,11 +42,11 @@ bool ANN::NeuralNetwork::Load(std::string filepath)
 	memset(char_buffer, 0, CHAR_BUF_LEN);
 	if (string_buffer != std::string("weights:"))
 		throw "incorrect file format";
-	weights.resize(configuration.size()-1);
-	for (size_t i = 1; i < weights.size(); i++) {
-		weights[i].resize(configuration[i]);
-		for (size_t j = 0; j < weights.size(); j++) {
-			weights[i][j].resize(configuration[i-1]);
+	weights.resize(configuration.size() - 1);
+	for (size_t i = 0; i < weights.size(); i++) {
+		weights[i].resize(configuration[i + 1]);
+		for (size_t j = 0; j < weights[i].size(); j++) {
+			weights[i][j].resize(configuration[i]);
 			for (size_t k = 0; k < weights[i][j].size(); k++) {
 				file >> weights[i][j][k];
 			}
