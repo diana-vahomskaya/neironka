@@ -1,7 +1,7 @@
 #include "PolynomialManager.h"
 
 
-OrthoBasis PolynomialManager::GetBasis()
+fe::OrthoBasis fe::PolynomialManager::GetBasis()
 {
 	return polynomials;
 }

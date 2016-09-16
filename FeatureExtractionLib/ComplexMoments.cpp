@@ -1,11 +1,11 @@
 #include "ComplexMoments.h"
 
 
-ComplexMoments::ComplexMoments()
+fe::ComplexMoments::ComplexMoments()
 {
 }
 
 
-ComplexMoments::~ComplexMoments()
+fe::ComplexMoments::~ComplexMoments()
 {
 }
