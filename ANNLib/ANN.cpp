@@ -92,7 +92,6 @@ bool ANN::LoadData(
 {
 	std::ifstream file(filepath);
 	if (!file.is_open()) return false;
-	int buffer;
 	const int CHAR_BUF_LEN = 100;
 	char char_buffer[CHAR_BUF_LEN];
 	file.getline(char_buffer, CHAR_BUF_LEN);
@@ -173,12 +172,12 @@ bool ANN::SaveData(
 	file << "primer_count:" << std::endl;
 	file << inputs.size() << std::endl;
 	file << "data:" << std::endl;
-	for (int i = 0; i < inputs.size(); i++) {
-		for (int j = 0; j < input_count; j++) {
+	for (size_t i = 0; i < inputs.size(); i++) {
+		for (size_t j = 0; j < input_count; j++) {
 			file << inputs[i][j] << "\t";
 		}
 		file << std::endl;
-		for (int j = 0; j < output_count; j++) {
+		for (size_t j = 0; j < output_count; j++) {
 			file << outputs[i][j] << "\t";
 		}
 		file << std::endl;
