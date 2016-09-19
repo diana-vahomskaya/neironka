@@ -43,8 +43,8 @@
     <LibraryPath>$(SolutionDir)Debug;$(LibraryPath);$(SolutionDir)Instruments\opencv300\x86\vc12\lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)Instruments\opencv300\include;$(SolutionDir)MachineLearning\FeatureExtractionLib;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Release;$(LibraryPath);D:\Университет\инфа\аспирантура\MachineLearning\Instruments\opencv300\x86\vc12\lib</LibraryPath>
+    <IncludePath>$(SolutionDir)Instruments\opencv300\include;$(SolutionDir)FeatureExtractionLib;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Release;$(LibraryPath);$(SolutionDir)Instruments\opencv300\x86\vc12\lib</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -69,11 +69,15 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opencv_world300.lib;FeatureExtractionLib.lib%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opencv_world300.lib;FeatureExtractionLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DecompositionSample.cpp" />
+    <ClCompile Include="Visualisation.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Visualisation.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

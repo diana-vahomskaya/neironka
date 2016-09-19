@@ -74,16 +74,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="BlobProcessor.h" />
     <ClInclude Include="ComplexMoments.h" />
+    <ClInclude Include="ExportMacro.h" />
     <ClInclude Include="FeatureExtraction.h" />
+    <ClInclude Include="IBlobProcessor.h" />
     <ClInclude Include="PolynomialManager.h" />
+    <ClInclude Include="RadialFunctions.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BlobProcessor.cpp" />
     <ClCompile Include="ComplexMoments.cpp" />
     <ClCompile Include="FeatureExtraction.cpp" />
     <ClCompile Include="PolynomialManager.cpp" />
+    <ClCompile Include="RadialFunctions.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
