@@ -2,7 +2,6 @@
 #include <FeatureExtraction.h>
 
 using namespace std;
-//using namespace fe;
 
 int main() 
 {
