@@ -38,5 +38,7 @@ namespace rf {
 		 * @return значение полинома в точке rad.
 		 */
 		static double ShiftedChebyshev(double rad, int n);
+
+		virtual ~RadialFunctions();
 	};
 }

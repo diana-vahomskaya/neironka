@@ -46,6 +46,8 @@ namespace fe {
 		 *		   в поле first хранитс€ реальна€ часть полинома, в поле second мнима€.  ажда€ часть имеет тип CV_64FC1.
 		 */
 		virtual OrthoBasis GetBasis();
+
+		virtual ~PolynomialManager();
 	};
 };
 
