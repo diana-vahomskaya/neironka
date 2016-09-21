@@ -17,7 +17,7 @@ namespace fe {
 		cv::Mat phase;
 
 		FEATURE_DLL_API ComplexMoments();
-		virtual ~ComplexMoments();
+		FEATURE_DLL_API virtual ~ComplexMoments();
 	};
 }
 
