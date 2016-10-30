@@ -3,5 +3,6 @@ Debug
 /*.suo
 /*.opensdf
 Release
+Data
 tinyxml
 opencv300
