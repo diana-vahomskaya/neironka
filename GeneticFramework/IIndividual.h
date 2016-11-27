@@ -29,7 +29,12 @@ namespace ga
 		 * @param input - входные данные
 		 * @return выходные данные.
 		 */
-		std::vector<double> MakeDecision(std::vector<double> input);
+		std::vector<float> MakeDecision(std::vector<float> & input);
+
+		/**Скопировать текущую особь.
+		 * @return копия текущей особи.
+		 */
+		std::shared_ptr<IIndividual> Clone();
 	};
 
 	// Переопределение типа "умный указатель на индивид".

@@ -1,7 +1,8 @@
-#include "GeneticAlgorithm.h"
 #include <algorithm>
+#include "GeneticAlgorithm.h"
 
 using namespace ga;
+using namespace std;
 
 ga::GeneticAlgorithm::GeneticAlgorithm()
 {
@@ -20,9 +21,6 @@ ga::pEpoch ga::GeneticAlgorithm::Selection(double unchange_perc, double mutation
 	{
 		return a.first > b.first;
 	});
-
-	// ƒалее необходимо выбрать нужное количество особей дл€ перехода в следующую попул€цию.
-	// ќстальную часть попул€ции заполнить мутировавшими и скрестившимис€ осб€ми.
-	throw "Stub called!";
+	throw "Stub called";
 }
 
