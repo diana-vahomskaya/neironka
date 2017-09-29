@@ -1,4 +1,4 @@
-#define ANNDLL_EXPORTS
+#define FEATURE_DLL_EXPORTS
 #include "FeatureExtraction.h"
 
 std::string fe::GetTestString()

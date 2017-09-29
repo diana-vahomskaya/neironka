@@ -1,3 +1,5 @@
+#define FEATURE_DLL_EXPORTS
+
 #include "ComplexMoments.h"
 
 
