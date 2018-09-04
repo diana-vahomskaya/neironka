@@ -4,7 +4,7 @@
 #include <iomanip>
 
 
-bool ANN::NeuralNetwork::Load(std::string filepath)
+bool ANN::ANeuralNetwork::Load(std::string filepath)
 {
 	std::ifstream file(filepath);
 	if (!file.is_open()) return false;
@@ -57,7 +57,7 @@ bool ANN::NeuralNetwork::Load(std::string filepath)
 	return true;
 }
 
-bool ANN::NeuralNetwork::Save(std::string filepath)
+bool ANN::ANeuralNetwork::Save(std::string filepath)
 {
 	if (!is_trained) return false;
 	std::ofstream file(filepath);
@@ -188,12 +188,12 @@ bool ANN::SaveData(
 	return true;
 }
 
-std::vector<int> ANN::NeuralNetwork::GetConfiguration()
+std::vector<int> ANN::ANeuralNetwork::GetConfiguration()
 {
 	return configuration;
 }
 
-float ANN::NeuralNetwork::Activation(float neuronInput)
+float ANN::ANeuralNetwork::Activation(float neuronInput)
 {
 	if (activation_type == POSITIVE_SYGMOID) {
 		return (1.f / (1.f + expf(-scale * neuronInput)));
@@ -204,7 +204,7 @@ float ANN::NeuralNetwork::Activation(float neuronInput)
 	return -1.f;
 }
 
-float ANN::NeuralNetwork::ActivationDerivative(float activation)
+float ANN::ANeuralNetwork::ActivationDerivative(float activation)
 {
 	if (activation_type == POSITIVE_SYGMOID) {
 		return scale * activation * (1.f - activation);
@@ -215,10 +215,24 @@ float ANN::NeuralNetwork::ActivationDerivative(float activation)
 	return -1;
 }
 
-ANN::NeuralNetwork::~NeuralNetwork()
+ANN::ANeuralNetwork::~ANeuralNetwork()
 {}
 
 std::string ANN::GetTestString()
 {
 	return "You succesfully plug ANN library!";
+}
+
+void ANN::ANeuralNetwork::RandomInit()
+{
+	weights.resize(configuration.size() - 1);
+	for (unsigned int layer_index = 0; layer_index < configuration.size() - 1; layer_index++) {
+		weights[layer_index].resize(configuration[layer_index + 1]);
+		for (unsigned int weight_index = 0; weight_index < weights[layer_index].size(); weight_index++) {
+			weights[layer_index][weight_index].resize(configuration[layer_index]);
+			for (unsigned int i = 0; i < weights[layer_index][weight_index].size(); i++) {
+				weights[layer_index][weight_index][i] = (rand() / float(RAND_MAX)/* - 0.5*/);
+			}
+		}
+	}
 }
