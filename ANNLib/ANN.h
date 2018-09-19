@@ -11,7 +11,7 @@
 
 namespace ANN
 {
-	ANNDLL_API class ANeuralNetwork
+	class ANeuralNetwork
 	{
 	public:
 		enum ActivationType
@@ -66,6 +66,7 @@ namespace ANN
 		/**
 		* Создать нейронную сеть
 		* @param configuration - конфигурация нейронной сети
+		*   Каждый элемент представляет собой количество нейронов в очередном слое
 		*/
 		friend ANNDLL_API std::shared_ptr<ANN::ANeuralNetwork> CreateNeuralNetwork(
 			std::vector<int> & configuration = std::vector<int>(),
