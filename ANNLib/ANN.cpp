@@ -230,7 +230,7 @@ void ANN::ANeuralNetwork::RandomInit()
 		for (unsigned int weight_index = 0; weight_index < weights[layer_index].size(); weight_index++) {
 			weights[layer_index][weight_index].resize(configuration[layer_index]);
 			for (unsigned int i = 0; i < weights[layer_index][weight_index].size(); i++) {
-				weights[layer_index][weight_index][i] = (rand() / float(RAND_MAX)/* - 0.5*/);
+				weights[layer_index][weight_index][i] = 2.f * (rand() / float(RAND_MAX) - 0.5f);
 			}
 		}
 	}
