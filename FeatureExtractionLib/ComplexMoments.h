@@ -3,20 +3,27 @@
 #include "ExportMacro.h"
 
 namespace fe {
-	/*Структура описывающая комплексные моменты*/
+	/** 
+	 * Структура, описывающая комплексные моменты. 
+	 */
 	class ComplexMoments
 	{
 	public:
-		/*Реальные части*/
+		/** Реальные части. */
 		cv::Mat re;
-		/*Мнимые части*/
+
+		/** Мнимые части. */
 		cv::Mat im;
-		/*Модули*/
+
+		/** Модули. */
 		cv::Mat abs;
-		/*Фазы*/
+		/** Фазы. */
 		cv::Mat phase;
 
+		/** Конструтор по умолчанию. */
 		FEATURE_DLL_API ComplexMoments();
+
+		/** Деструктор. */
 		FEATURE_DLL_API virtual ~ComplexMoments();
 	};
 }

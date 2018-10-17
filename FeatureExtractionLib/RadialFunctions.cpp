@@ -121,10 +121,7 @@ double rf::RadialFunctions::Legendre(double x, int n)
 	return l0;
 }
 
-rf::RadialFunctions::~RadialFunctions()
-{
-
-}
+rf::RadialFunctions::~RadialFunctions() = default;
 
 cv::Mat rf::RadialFunctions::walsh_matrix;
 int rf::RadialFunctions::walsh_n_max = 0;
