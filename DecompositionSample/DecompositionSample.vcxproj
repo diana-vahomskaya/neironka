@@ -58,7 +58,7 @@
       <AdditionalDependencies>opencv_world300d.lib;FeatureExtractionLibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>copy $(SolutionDir)Instruments\opencv300\x86\vc12\bin\opencv_world300d.dll $(SolutionDir)Debug</Command>
+      <Command>copy "$(SolutionDir)Instruments\opencv300\x86\vc12\bin\opencv_world300d.dll" "$(SolutionDir)Debug"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
