@@ -43,12 +43,12 @@ bool ANN::ANeuralNetwork::Load(std::string filepath)
 	if (string_buffer != std::string("weights:"))
 		throw "incorrect file format";
 	weights.resize(configuration.size() - 1);
-	for (size_t i = 0; i < weights.size(); i++) {
-		weights[i].resize(configuration[i + 1]);
-		for (size_t j = 0; j < weights[i].size(); j++) {
-			weights[i][j].resize(configuration[i]);
-			for (size_t k = 0; k < weights[i][j].size(); k++) {
-				file >> weights[i][j][k];
+	for (size_t layer_idx = 0; layer_idx < weights.size(); layer_idx++) {
+		weights[layer_idx].resize(configuration[layer_idx]);
+		for (size_t from_idx = 0; from_idx < weights[layer_idx].size(); from_idx++) {
+			weights[layer_idx][from_idx].resize(configuration[layer_idx + 1]);
+			for (size_t to_idx = 0; to_idx < weights[layer_idx][from_idx].size(); to_idx++) {
+				file >> weights[layer_idx][from_idx][to_idx];
 			}
 		}
 	}
