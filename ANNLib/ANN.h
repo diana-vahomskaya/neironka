@@ -25,14 +25,14 @@ namespace ANN
 
 		/**
 		* Прочитать нейронную сеть из файла. Сеть сохраняется вызовом метода Save.
-		* @param filepath - имя и путь до файла с сеткой.
+		* @param filepath - имя и путь до файла с сетью.
 		* @return - успешность считывания.
 		*/
 		ANNDLL_API virtual bool Load(std::string filepath);
 
 		/**
 		* Сохранить нейронную сеть в файл. Сеть загружается вызовом метода Load.
-		* @param filepath - имя и путь до файла с сеткой.
+		* @param filepath - имя и путь до файла с сетью.
 		* @return - успешность сохранения.
 		*/
 		ANNDLL_API virtual bool Save(std::string filepath);
@@ -42,7 +42,7 @@ namespace ANN
 		* @return конфигурация сети - массив - в каждом элементе хранится количество нейронов в слое.
 		*			Номер элемента соответствует номеру слоя.
 		*/
-		ANNDLL_API virtual std::vector<int> GetConfiguration();
+		ANNDLL_API virtual std::vector<size_t> GetConfiguration();
 
 		/**
 		* Проинициализирвать веса сети случайным образом.
@@ -71,10 +71,12 @@ namespace ANN
 		* @param configuration - конфигурация нейронной сети.
 		*   Каждый элемент представляет собой количество нейронов в очередном слое.
 		* @param activation_type - тип активационной функции (униполярная, биполярная).
+		* @param scale - масштаб активационной функции.
 		*/
 		friend ANNDLL_API std::shared_ptr<ANN::ANeuralNetwork> CreateNeuralNetwork(
-			std::vector<int> & configuration = std::vector<int>(),
-			ANeuralNetwork::ActivationType activation_type = ANeuralNetwork::POSITIVE_SYGMOID
+			std::vector<size_t> & configuration = std::vector<size_t>(),
+			ANeuralNetwork::ActivationType activation_type = ANeuralNetwork::POSITIVE_SYGMOID, 
+			float scale = 1.0
 		);
 
 		/**
@@ -88,7 +90,7 @@ namespace ANN
 		* @param speed - скорость обучения.
 		* @param std_dump - сбрасывать ли информацию о процессе обучения в стандартный поток вывода?
 		*/
-		friend ANNDLL_API float BackPropTrain(
+		friend ANNDLL_API float BackPropTraining(
 			std::shared_ptr<ANN::ANeuralNetwork> ann,
 			std::vector<std::vector<float>> & inputs,
 			std::vector<std::vector<float>> & outputs,
@@ -96,6 +98,20 @@ namespace ANN
 			float eps = 0.1,
 			float speed = 0.1,
 			bool std_dump = false
+		);
+
+		/**
+		* Провести одну итерацию обучения методом обратного распространения ошибки.
+		* @param ann - нейронная сеть, которую необходимо обучить.
+		* @param input - вход для обучения.
+		* @param outputs - выход для обучения.
+		* @param speed - скорость обучения.
+		*/
+		friend ANNDLL_API float BackPropTrainingIteration(
+			std::shared_ptr<ANN::ANeuralNetwork> ann, 
+			const std::vector<float>& input,
+			const std::vector<float>& output,
+			float speed
 		);
 
 		/***************************************************************************/
@@ -108,7 +124,7 @@ namespace ANN
 	protected:
 		/** 
 		 * Веса сети. 
-		 * Первый индекс - номер слоя, 
+		 * Первый индекс - номер слоя от которого идёт связь, 
 		 * второй индекс - номер нейрона от которого идёт связь, 
 		 * третий индекс - номер нейрона к которому идёт связь. 
 		 */
@@ -119,7 +135,7 @@ namespace ANN
 		* номер элемета в массиве соответсвует номеру слоя.
 		* значение - количеству нейронов.
 		*/
-		std::vector<int> configuration;
+		std::vector<size_t> configuration;
 
 		/** Обучена ли сеть? */
 		bool is_trained;

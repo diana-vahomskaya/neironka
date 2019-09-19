@@ -187,7 +187,7 @@ bool ANN::SaveData(
 	return true;
 }
 
-std::vector<int> ANN::ANeuralNetwork::GetConfiguration()
+std::vector<size_t> ANN::ANeuralNetwork::GetConfiguration()
 {
 	return configuration;
 }
@@ -226,11 +226,11 @@ void ANN::ANeuralNetwork::RandomInit()
 {
 	weights.resize(configuration.size() - 1);
 	for (unsigned int layer_index = 0; layer_index < configuration.size() - 1; layer_index++) {
-		weights[layer_index].resize(configuration[layer_index + 1]);
-		for (unsigned int weight_index = 0; weight_index < weights[layer_index].size(); weight_index++) {
-			weights[layer_index][weight_index].resize(configuration[layer_index]);
-			for (unsigned int i = 0; i < weights[layer_index][weight_index].size(); i++) {
-				weights[layer_index][weight_index][i] = 2.f * (rand() / float(RAND_MAX) - 0.5f);
+		weights[layer_index].resize(configuration[layer_index]);
+		for (unsigned int from_index = 0; from_index < weights[layer_index].size(); from_index++) {
+			weights[layer_index][from_index].resize(configuration[layer_index + 1]);
+			for (unsigned int to_index = 0; to_index < weights[layer_index][from_index].size(); to_index++) {
+				weights[layer_index][from_index][to_index] = 2.f * (rand() / float(RAND_MAX) - 0.5f);
 			}
 		}
 	}
