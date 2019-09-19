@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ANNLib", "ANNLib\ANNLib.vcxproj", "{C43879F6-1AF6-4F03-994F-F3F7F83C4898}"
 EndProject
@@ -38,7 +38,6 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C43879F6-1AF6-4F03-994F-F3F7F83C4898}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{C43879F6-1AF6-4F03-994F-F3F7F83C4898}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{C43879F6-1AF6-4F03-994F-F3F7F83C4898}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{C43879F6-1AF6-4F03-994F-F3F7F83C4898}.Debug|Win32.ActiveCfg = Debug|Win32
 		{C43879F6-1AF6-4F03-994F-F3F7F83C4898}.Release|Any CPU.ActiveCfg = Release|Win32
 		{C43879F6-1AF6-4F03-994F-F3F7F83C4898}.Release|Mixed Platforms.ActiveCfg = Release|Win32
