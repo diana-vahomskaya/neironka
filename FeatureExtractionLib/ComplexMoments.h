@@ -17,6 +17,7 @@ namespace fe {
 
 		/** Модули. */
 		cv::Mat abs;
+
 		/** Фазы. */
 		cv::Mat phase;
 
