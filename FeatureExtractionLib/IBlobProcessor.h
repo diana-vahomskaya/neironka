@@ -7,16 +7,16 @@ namespace fe {
 	/*
 	 * Интерфейс обработчика смежных областей.
 	 */
-	__interface IBlobProcessor
+	class IBlobProcessor
 	{
 	public:
 		/**
-		 * Найти смежные области на изображении.
+		 * Найти смежные области на изображении. Светлые области представляют собой фон, тёмные области объекты.
 		 * @param image - изображение для поиска смежных областей,
 		 *				  должно иметь тип CV_8UC1.
 		 * @param blobs - буфер для записи неотмасштабированных смежных областей.
 		 */
-		virtual void DetectBlobs(cv::Mat image, std::vector<cv::Mat> & blobs) = 0;
+		virtual std::vector<cv::Mat> DetectBlobs(cv::Mat image) = 0;
 
 		/**
 		 * Привести размер смежных областей к единому масштабу.
