@@ -1,6 +1,7 @@
 #pragma once
 
 #include <opencv2/opencv.hpp>
+#include <string>
 #include "ComplexMoments.h"
 
 namespace fe {
@@ -26,17 +27,16 @@ namespace fe {
 		/**
 		 * Разложить картинку в ряд по полиномам.
 		 * @param blob - картинка (смежная область), должна быть типа CV_8UC1.
-		 * @param decomposition - буфер для записи разложения.
+		 * @return decomposition разложение.
 		 */
-		virtual void Decompose(cv::Mat blob, ComplexMoments & decomposition) = 0;
+		virtual ComplexMoments Decompose(cv::Mat blob) = 0;
 
 		/**
 		 * Восстановить картинку из разложения.
 		 * @param decomposition - разложение картинки в ряд.
-		 * @param recovery - буфер для записи восстановленного изображения. 
-		 *					 Воссстановленное изображение имеет тип CV_64FC1.
+		 * @return восстановленное изображение, имеет тип CV_64FC1.
 		 */
-		virtual void Recovery(ComplexMoments & decomposition, cv::Mat & recovery) = 0;
+		virtual cv::Mat Recovery(ComplexMoments & decomposition) = 0;
 
 		/**
 		 * Проинициализировать базис ортогональных полиномов ~ exp(jm*fi).

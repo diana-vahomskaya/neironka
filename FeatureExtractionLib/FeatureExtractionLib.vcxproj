@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetName>$(ProjectName)d</TargetName>
     <IncludePath>$(SolutionDir)Instruments\opencv300\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir);$(SolutionDir)Instruments\opencv300\x86\vc12\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir);$(SolutionDir)Instruments\opencv300\Win32\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(SolutionDir)Instruments\opencv300\include;$(IncludePath);</IncludePath>

@@ -122,19 +122,19 @@ void MomentsHelper::ProcessOneImage(
 	}
 	threshold(image, image, MIDDLE_LEVEL, MAX_LEVEL, CV_THRESH_BINARY_INV);
 	vector<Mat> blobs, nblobs;
-	blob_processor->DetectBlobs(image, blobs);
+	blobs = blob_processor->DetectBlobs(image);
 	if (blobs.size() != 1) {
 		throw "Incorrect input data. More then one blob.";
 	}
-	blob_processor->NormalizeBlobs(blobs, nblobs, (poly_manager->GetBasis()[0][0].first.cols));
-	poly_manager->Decompose(nblobs[0], res);
+	nblobs = blob_processor->NormalizeBlobs(blobs, (poly_manager->GetBasis()[0][0].first.cols));
+	res = poly_manager->Decompose(nblobs[0]);
 }
 
 bool MomentsHelper::GetSamplePaths(std::string base_path, std::vector<std::string> & paths)
 {
 	paths.clear();
 	WIN32_FIND_DATA findData;
-	HANDLE handle;
+	HANDLE handle;    
 	// Ищем первый файл.
 	handle = FindFirstFile((base_path + "\\*").c_str(), &findData);
 	// Находим ссылку на родительский каталог.

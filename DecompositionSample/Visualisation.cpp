@@ -7,20 +7,24 @@ using namespace cv;
 void Show64FC1Mat(std::string wnd_name, cv::Mat mat64fc1)
 {
 	if (mat64fc1.empty()) {
-		throw "empty polynomial";
+		throw std::invalid_argument("Empty polynomial");
 	}
 	Mat show_mat;
-	mat64fc1.convertTo(show_mat, CV_8UC1, MAX_LEVEL, MIDDLE_LEVEL);
+	double min, max;
+	cv::minMaxLoc(mat64fc1, &min, &max);
+	mat64fc1 -= min;
+	mat64fc1 /= (max - min);
+	mat64fc1.convertTo(show_mat, CV_8UC1, MAX_LEVEL);
 	imshow(wnd_name, show_mat);
 }
 
 void ShowBlobDecomposition(std::string wnd_name, Mat blob, Mat decomposition)
 {
- 	if (blob.empty()) throw "Empty blob!";
-	if (decomposition.empty()) throw "Empty blob!";
-	if (blob.size != decomposition.size) throw "Incorrect size!";
-	if (blob.type() != CV_8UC1) throw "Incorrect blob mat type!";
-	if (decomposition.type() != CV_64FC1) throw "Incorrect decomposition mat type!";
+ 	if (blob.empty()) throw std::invalid_argument("Empty blob!");
+	if (decomposition.empty()) throw std::invalid_argument("Empty blob!");
+	if (blob.size != decomposition.size) throw std::invalid_argument("Incorrect size!");
+	if (blob.type() != CV_8UC1) throw std::invalid_argument("Incorrect blob mat type!");
+	if (decomposition.type() != CV_64FC1) throw std::invalid_argument("Incorrect decomposition mat type!");
 	Mat show_decomposition;
 	decomposition.convertTo(show_decomposition, CV_8UC1, MAX_LEVEL, MIDDLE_LEVEL);
 	Mat show_mat = Mat::zeros(blob.rows, blob.cols * 2, CV_8UC1);
@@ -35,19 +39,19 @@ void ShowPolynomials(std::string wnd_name, std::vector<std::vector<std::pair<cv:
 {
 	size_t j_max = 0;
 	if (polynomials.size() == 0) {
-		throw "nothing to show";
+		throw std::invalid_argument("Nothing to show");
 	}
 	for (size_t i = 0; i < polynomials.size(); i++) {
 		if (polynomials[i].size() == 0) {
-			throw "empty polynomial line";
+			throw std::invalid_argument("Empty polynomial line");
 		}
 		if (polynomials[i].size() > j_max) j_max = polynomials[i].size();
 		for (size_t j = 0; j < polynomials[i].size(); j++) {
 			if (polynomials[i][j].first.empty()) {
-				throw "empty polynomial";
+				throw std::invalid_argument("Empty polynomial");
 			}
 			if (polynomials[i][j].second.empty()) {
-				throw "empty polynomial";
+				throw std::invalid_argument("Empty polynomial");
 			}
 		}
 	}
