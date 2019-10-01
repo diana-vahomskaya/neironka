@@ -19,7 +19,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -41,11 +41,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(SolutionDir)Instruments\opencv300\include;$(SolutionDir)FeatureExtractionLib;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Debug;$(LibraryPath);$(SolutionDir)Instruments\opencv300\x86\vc12\lib</LibraryPath>
+    <LibraryPath>$(SolutionDir)Debug;$(LibraryPath);$(SolutionDir)Instruments\opencv300\Win32\lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(SolutionDir)Instruments\opencv300\include;$(SolutionDir)FeatureExtractionLib;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Release;$(LibraryPath);$(SolutionDir)Instruments\opencv300\x86\vc12\lib</LibraryPath>
+    <LibraryPath>$(SolutionDir)Release;$(LibraryPath);$(SolutionDir)Instruments\opencv300\Win32\lib</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -59,7 +59,7 @@
       <SubSystem>Console</SubSystem>
     </Link>
     <PreBuildEvent>
-      <Command>copy "$(SolutionDir)Instruments\opencv300\x86\vc12\bin\opencv_world300d.dll" "$(SolutionDir)Debug"</Command>
+      <Command>copy "$(SolutionDir)Instruments\opencv300\Win32\bin\opencv_world300d.dll" "$(SolutionDir)Debug"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
