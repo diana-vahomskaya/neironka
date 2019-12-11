@@ -33,7 +33,7 @@ int main(int argc, char** argv)
 	string key;
 	do 
 	{
-		cout << "===Enter next walues to do something:===" << endl;
+		cout << "===Enter next values to do something:===" << endl;
 		cout << "  '1' - to generate data." << endl;
 		cout << "  '2' - to train network." << endl;
 		cout << "  '3' - to check recognizing precision." << endl;
