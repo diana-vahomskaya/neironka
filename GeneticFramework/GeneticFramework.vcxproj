@@ -14,7 +14,7 @@
     <ProjectGuid>{46351A83-EA8D-4F23-B04A-8D34B63688E3}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>GeneticFramework</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

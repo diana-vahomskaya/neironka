@@ -1,8 +1,7 @@
-#define ANNDLL_EXPORTS
+п»ї#define ANNDLL_EXPORTS
 #include <ANN.h>
 #include <fstream>
 #include <iomanip>
-
 
 bool ANN::ANeuralNetwork::Load(std::string filepath)
 {
@@ -43,12 +42,12 @@ bool ANN::ANeuralNetwork::Load(std::string filepath)
 	if (string_buffer != std::string("weights:"))
 		throw "incorrect file format";
 	weights.resize(configuration.size() - 1);
-	for (size_t layer_idx = 0; layer_idx < weights.size(); layer_idx++) {
-		weights[layer_idx].resize(configuration[layer_idx]);
-		for (size_t from_idx = 0; from_idx < weights[layer_idx].size(); from_idx++) {
-			weights[layer_idx][from_idx].resize(configuration[layer_idx + 1]);
-			for (size_t to_idx = 0; to_idx < weights[layer_idx][from_idx].size(); to_idx++) {
-				file >> weights[layer_idx][from_idx][to_idx];
+	for (size_t i = 0; i < weights.size(); i++) {
+		weights[i].resize(configuration[i + 1]);
+		for (size_t j = 0; j < weights[i].size(); j++) {
+			weights[i][j].resize(configuration[i]);
+			for (size_t k = 0; k < weights[i][j].size(); k++) {
+				file >> weights[i][j][k];
 			}
 		}
 	}
@@ -87,11 +86,12 @@ bool ANN::ANeuralNetwork::Save(std::string filepath)
 
 bool ANN::LoadData(
 	std::string filepath,
-	std::vector<std::vector<float>> & inputs,
-	std::vector<std::vector<float>> & outputs)
+	std::vector<std::vector<float>>& inputs,
+	std::vector<std::vector<float>>& outputs)
 {
 	std::ifstream file(filepath);
 	if (!file.is_open()) return false;
+	int buffer;
 	const int CHAR_BUF_LEN = 100;
 	char char_buffer[CHAR_BUF_LEN];
 	file.getline(char_buffer, CHAR_BUF_LEN);
@@ -125,15 +125,15 @@ bool ANN::LoadData(
 		throw "incorrect file format";
 	inputs.resize(primer_count);
 	outputs.resize(primer_count);
-	//цикл по примерам
+	//С†РёРєР» РїРѕ РїСЂРёРјРµСЂР°Рј
 	for (int i = 0; i < primer_count; i++) {
 		inputs[i].resize(input_count);
-		//считываем входы
+		//СЃС‡РёС‚С‹РІР°РµРј РІС…РѕРґС‹
 		for (int j = 0; j < input_count; j++) {
 			file >> inputs[i][j];
 		}
 		file.getline(char_buffer, CHAR_BUF_LEN);
-		//считываем выходы
+		//СЃС‡РёС‚С‹РІР°РµРј РІС‹С…РѕРґС‹
 		outputs[i].resize(output_count);
 		for (int j = 0; j < output_count; j++) {
 			file >> outputs[i][j];
@@ -147,8 +147,8 @@ bool ANN::LoadData(
 
 bool ANN::SaveData(
 	std::string filepath,
-	std::vector<std::vector<float>> & inputs,
-	std::vector<std::vector<float>> & outputs)
+	std::vector<std::vector<float>>& inputs,
+	std::vector<std::vector<float>>& outputs)
 {
 	if (inputs.size() != outputs.size())
 		throw "input size and output size must be the same";
@@ -172,12 +172,12 @@ bool ANN::SaveData(
 	file << "primer_count:" << std::endl;
 	file << inputs.size() << std::endl;
 	file << "data:" << std::endl;
-	for (size_t i = 0; i < inputs.size(); i++) {
-		for (size_t j = 0; j < input_count; j++) {
+	for (int i = 0; i < inputs.size(); i++) {
+		for (int j = 0; j < input_count; j++) {
 			file << inputs[i][j] << "\t";
 		}
 		file << std::endl;
-		for (size_t j = 0; j < output_count; j++) {
+		for (int j = 0; j < output_count; j++) {
 			file << outputs[i][j] << "\t";
 		}
 		file << std::endl;
@@ -187,7 +187,7 @@ bool ANN::SaveData(
 	return true;
 }
 
-std::vector<size_t> ANN::ANeuralNetwork::GetConfiguration()
+std::vector<int> ANN::ANeuralNetwork::GetConfiguration()
 {
 	return configuration;
 }
@@ -226,11 +226,11 @@ void ANN::ANeuralNetwork::RandomInit()
 {
 	weights.resize(configuration.size() - 1);
 	for (unsigned int layer_index = 0; layer_index < configuration.size() - 1; layer_index++) {
-		weights[layer_index].resize(configuration[layer_index]);
-		for (unsigned int from_index = 0; from_index < weights[layer_index].size(); from_index++) {
-			weights[layer_index][from_index].resize(configuration[layer_index + 1]);
-			for (unsigned int to_index = 0; to_index < weights[layer_index][from_index].size(); to_index++) {
-				weights[layer_index][from_index][to_index] = 2.f * (rand() / float(RAND_MAX) - 0.5f);
+		weights[layer_index].resize(configuration[layer_index + 1]);
+		for (unsigned int weight_index = 0; weight_index < weights[layer_index].size(); weight_index++) {
+			weights[layer_index][weight_index].resize(configuration[layer_index]);
+			for (unsigned int i = 0; i < weights[layer_index][weight_index].size(); i++) {
+				weights[layer_index][weight_index][i] = (rand() / float(RAND_MAX)/* - 0.5*/);
 			}
 		}
 	}
