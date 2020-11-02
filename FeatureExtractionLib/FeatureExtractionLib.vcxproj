@@ -85,7 +85,9 @@
   <ItemGroup>
     <ClCompile Include="ComplexMoments.cpp" />
     <ClCompile Include="FeatureExtraction.cpp" />
+    <ClCompile Include="IBlobProcessor_My.cpp" />
     <ClCompile Include="PolynomialManager.cpp" />
+    <ClCompile Include="WalshPolynom.cpp" />
     <ClCompile Include="RadialFunctions.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

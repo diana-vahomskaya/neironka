@@ -29,7 +29,7 @@ int main()
 	CPM->InitBasis(max, diametr); //генерируем базис комплексных полиномов
 	ShowPolynomials("Basic:", CPM->GetBasis()); //показываем базис на экране
 
-	cv::Mat image = cv::imread("..\\DecompositionSample\\Picture.png", IMREAD_GRAYSCALE); //читаем картинку из файла
+	cv::Mat image = cv::imread("..\\DecompositionSample\\Picture.png", CV_8UC1); //читаем картинку из файла
 	imshow("Picture:", image); //Установка входного изображения на экран
 
 	cout << CPM->GetType() << endl << endl;
