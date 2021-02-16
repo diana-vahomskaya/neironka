@@ -10,7 +10,7 @@ using namespace std;
 
 int main() 
 {
-	cout << "hello world!" << endl;
+	/*cout << "hello world!" << endl;
 	cout << fe::GetTestString().c_str() << endl;
 	
 	int max;
@@ -59,6 +59,38 @@ int main()
 		ShowBlobDecomposition("Восстановленные цифры:", normalized_blobs[i], Recovery_blobs[i]);
 		cv::waitKey(0);
 	}
-	waitKey(0);
+	waitKey(0);*/
+	cout << fe::GetTestString().c_str() << endl;
+	shared_ptr<fe::PolynomialManager> pPolyMan = fe::CreatePolynomialManager();
+	cout << pPolyMan->GetType() << endl;
+
+	// Формирование базиса:
+	int nmax = 12; int dia = 64;
+	pPolyMan->InitBasis(nmax, dia);
+	fe::OrthoBasis OBS = pPolyMan->GetBasis();
+	ShowPolynomials("Polynomial orthogonal basis", OBS);
+	waitKey();
+
+	// Загрузка изображения:
+	Mat numage = imread("..\\DecompositionSample\\Picture.png", CV_LOAD_IMAGE_GRAYSCALE);	//CV_8UC1
+	Mat newmage;
+	threshold(numage, newmage, 127.0, 255.0, THRESH_BINARY);
+	cv::imshow("New image", newmage);
+	cv::waitKey();
+
+	// Обнаружение символов:
+	shared_ptr<fe::IBlobProcessor> pIBP = fe::CreateBlobProcessor();
+	cout << pIBP->GetType() << endl;
+	vector<Mat> blums = pIBP->DetectBlobs(newmage);
+	vector<Mat> nblums = pIBP->NormalizeBlobs(blums, dia);
+
+	for (int i = 0; i < nblums.size(); i++)
+	{
+		// Разложение и восстановление символа:
+		fe::ComplexMoments cm = pPolyMan->Decompose(nblums[i]);
+		Mat blum = pPolyMan->Recovery(cm);
+		ShowBlobDecomposition("Number " + to_string(i), nblums[i], blum);
+	}
+	waitKey();
 	return 0;
 }

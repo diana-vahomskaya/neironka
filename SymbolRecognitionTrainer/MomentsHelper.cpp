@@ -21,18 +21,18 @@ MomentsHelper::~MomentsHelper()
 
 bool MomentsHelper::GenerateMoments(
 	std::string path,
-	std::shared_ptr<fe::IBlobProcessor> blob_processor, 
-	std::shared_ptr<fe::PolynomialManager> poly_manager, 
-	std::map< std::string, std::vector<fe::ComplexMoments> > & res)
+	std::shared_ptr<fe::IBlobProcessor> blob_processor,
+	std::shared_ptr<fe::PolynomialManager> poly_manager,
+	std::map< std::string, std::vector<fe::ComplexMoments> >& res)
 {
 	vector<string> sample_dirs;
 	GetSamplePaths(path, sample_dirs);
 	WIN32_FIND_DATA findData;
 	HANDLE handle;
 	res.clear();
-	//Перебираем все папки.
+	//РџРµСЂРµР±РёСЂР°РµРј РІСЃРµ РїР°РїРєРё.
 	for (size_t i = 0; i < sample_dirs.size(); i++) {
-		// Ищем файл со значением буквы.
+		// РС‰РµРј С„Р°Р№Р» СЃРѕ Р·РЅР°С‡РµРЅРёРµРј Р±СѓРєРІС‹.
 		ifstream f_val((path + "\\" + sample_dirs[i] + "\\" + VAL_FILENAME).c_str());
 		if (!f_val.is_open()) {
 			return false;
@@ -40,18 +40,18 @@ bool MomentsHelper::GenerateMoments(
 		string key;
 		f_val >> key;
 		f_val.close();
-		// Ищем первый файл png.
+		// РС‰РµРј РїРµСЂРІС‹Р№ С„Р°Р№Р» png.
 		handle = FindFirstFile((path + "\\" + sample_dirs[i] + "\\*.png").c_str(), &findData);
 		res.insert(pair<string, vector<fe::ComplexMoments>>(key, vector< ComplexMoments >()));
 		do {
-			//Считываем картинку.
+			//РЎС‡РёС‚С‹РІР°РµРј РєР°СЂС‚РёРЅРєСѓ.
 			ComplexMoments mom;
-			//Обрабатываем.
+			//РћР±СЂР°Р±Р°С‚С‹РІР°РµРј.
 			ProcessOneImage(
 				path + "\\" + sample_dirs[i] + "\\" + findData.cFileName,
 				blob_processor,
 				poly_manager, mom);
-			//Сохраняем
+			//РЎРѕС…СЂР°РЅСЏРµРј
 			res[key].push_back(mom);
 		} while (FindNextFile(handle, &findData));
 		FindClose(handle);
@@ -69,7 +69,7 @@ bool MomentsHelper::DistributeData(
 	GetSamplePaths(labeled_data_path, sample_dirs);
 	WIN32_FIND_DATA findData;
 	HANDLE handle;
-	// Для каждой папки создадим соответсвующую в каталоге для примеров и тестовых данных.
+	// Р”Р»СЏ РєР°Р¶РґРѕР№ РїР°РїРєРё СЃРѕР·РґР°РґРёРј СЃРѕРѕС‚РІРµС‚СЃРІСѓСЋС‰СѓСЋ РІ РєР°С‚Р°Р»РѕРіРµ РґР»СЏ РїСЂРёРјРµСЂРѕРІ Рё С‚РµСЃС‚РѕРІС‹С… РґР°РЅРЅС‹С….
 	for (size_t i = 0; i < sample_dirs.size(); i++) {
 		if (!CreateDirectory((ground_data_path + "\\" + sample_dirs[i]).c_str(), NULL) ||
 			!CreateDirectory((test_data_path + "\\" + sample_dirs[i]).c_str(), NULL))
@@ -77,7 +77,7 @@ bool MomentsHelper::DistributeData(
 			return false;
 		}
 	}
-	//Заглянем в каждую директорию и раскидаем файлы
+	//Р—Р°РіР»СЏРЅРµРј РІ РєР°Р¶РґСѓСЋ РґРёСЂРµРєС‚РѕСЂРёСЋ Рё СЂР°СЃРєРёРґР°РµРј С„Р°Р№Р»С‹
 	for (size_t i = 0; i < sample_dirs.size(); i++) {
 		string find_path = labeled_data_path + "\\" + sample_dirs[i];
 		string labeled_val = labeled_data_path + "\\" + sample_dirs[i] + "\\" + VAL_FILENAME;
@@ -88,9 +88,9 @@ bool MomentsHelper::DistributeData(
 			) {
 			return false;
 		}
-		// Ищем первый файл.
+		// РС‰РµРј РїРµСЂРІС‹Р№ С„Р°Р№Р».
 		handle = FindFirstFile((find_path + "\\*.png").c_str(), &findData);
-		// И только теперь проходим по нужным нам файлам.
+		// Р С‚РѕР»СЊРєРѕ С‚РµРїРµСЂСЊ РїСЂРѕС…РѕРґРёРј РїРѕ РЅСѓР¶РЅС‹Рј РЅР°Рј С„Р°Р№Р»Р°Рј.
 		do {
 			string postfix = "\\" + sample_dirs[i] + "\\" + findData.cFileName;
 			string copy_from = labeled_data_path + postfix;
@@ -111,12 +111,12 @@ bool MomentsHelper::DistributeData(
 }
 
 void MomentsHelper::ProcessOneImage(
-		string image_path,
-		std::shared_ptr<fe::IBlobProcessor> blob_processor,
-		std::shared_ptr<fe::PolynomialManager> poly_manager,
-		fe::ComplexMoments & res)
+	string image_path,
+	std::shared_ptr<fe::IBlobProcessor> blob_processor,
+	std::shared_ptr<fe::PolynomialManager> poly_manager,
+	fe::ComplexMoments& res)
 {
-	Mat image = imread(image_path, cv::IMREAD_GRAYSCALE);
+/*	Mat image = imread(image_path, cv::IMREAD_GRAYSCALE);
 	if (image.empty()) {
 		throw "Empty image";
 	}
@@ -127,22 +127,39 @@ void MomentsHelper::ProcessOneImage(
 		throw "Incorrect input data. More then one blob.";
 	}
 	nblobs = blob_processor->NormalizeBlobs(blobs, (poly_manager->GetBasis()[0][0].first.cols));
+	res = poly_manager->Decompose(nblobs[0]);*/
+	Mat image = imread(image_path, cv::IMREAD_GRAYSCALE);
+	if (image.empty()) {
+		throw "Empty image";
+	}
+	threshold(image, image, MIDDLE_LEVEL, MAX_LEVEL, CV_THRESH_BINARY);
+	vector<Mat> blobs, nblobs;
+	blobs = blob_processor->DetectBlobs(image);
+	auto biggest = blobs.front();
+	for (auto blob : blobs)
+	{
+		if (blob.cols * blob.rows > biggest.cols * biggest.rows)
+		{
+			biggest = blob;
+		}
+	}
+	nblobs = blob_processor->NormalizeBlobs(vector<Mat>(1, biggest), (poly_manager->GetBasis()[0][0].first.cols));
 	res = poly_manager->Decompose(nblobs[0]);
 }
 
-bool MomentsHelper::GetSamplePaths(std::string base_path, std::vector<std::string> & paths)
+bool MomentsHelper::GetSamplePaths(std::string base_path, std::vector<std::string>& paths)
 {
 	paths.clear();
 	WIN32_FIND_DATA findData;
-	HANDLE handle;    
-	// Ищем первый файл.
+	HANDLE handle;
+	// РС‰РµРј РїРµСЂРІС‹Р№ С„Р°Р№Р».
 	handle = FindFirstFile((base_path + "\\*").c_str(), &findData);
-	// Находим ссылку на родительский каталог.
+	// РќР°С…РѕРґРёРј СЃСЃС‹Р»РєСѓ РЅР° СЂРѕРґРёС‚РµР»СЊСЃРєРёР№ РєР°С‚Р°Р»РѕРі.
 	FindNextFile(handle, &findData);
-	// И только теперь проходим по нужным нам файлам.
-	// Найдем каталоги с примерами.
-	while (FindNextFile(handle, &findData))	{
-		//производим необходимые операции, например запоминаем имена всех файлов в директории.
+	// Р С‚РѕР»СЊРєРѕ С‚РµРїРµСЂСЊ РїСЂРѕС…РѕРґРёРј РїРѕ РЅСѓР¶РЅС‹Рј РЅР°Рј С„Р°Р№Р»Р°Рј.
+	// РќР°Р№РґРµРј РєР°С‚Р°Р»РѕРіРё СЃ РїСЂРёРјРµСЂР°РјРё.
+	while (FindNextFile(handle, &findData)) {
+		//РїСЂРѕРёР·РІРѕРґРёРј РЅРµРѕР±С…РѕРґРёРјС‹Рµ РѕРїРµСЂР°С†РёРё, РЅР°РїСЂРёРјРµСЂ Р·Р°РїРѕРјРёРЅР°РµРј РёРјРµРЅР° РІСЃРµС… С„Р°Р№Р»РѕРІ РІ РґРёСЂРµРєС‚РѕСЂРёРё.
 		if ((findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) > 0) {
 			paths.push_back(findData.cFileName);
 		}
@@ -151,7 +168,7 @@ bool MomentsHelper::GetSamplePaths(std::string base_path, std::vector<std::strin
 	return true;
 }
 
-bool MomentsHelper::SaveMoments(std::string filename, std::map< std::string, std::vector<fe::ComplexMoments> > & moments)
+bool MomentsHelper::SaveMoments(std::string filename, std::map< std::string, std::vector<fe::ComplexMoments> >& moments)
 {
 	FileStorage fs(filename, FileStorage::WRITE);
 	if (!fs.isOpened()) {
@@ -170,7 +187,7 @@ bool MomentsHelper::SaveMoments(std::string filename, std::map< std::string, std
 	return true;
 }
 
-bool MomentsHelper::ReadMoments(std::string filename, std::map< std::string, std::vector<fe::ComplexMoments> > & moments)
+bool MomentsHelper::ReadMoments(std::string filename, std::map< std::string, std::vector<fe::ComplexMoments> >& moments)
 {
 	FileStorage fs(filename, FileStorage::READ);
 	if (!fs.isOpened()) {

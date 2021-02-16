@@ -13,7 +13,7 @@ MomentsRecognizer::~MomentsRecognizer()
 {
 }
 
-std::string MomentsRecognizer::Recognize(fe::ComplexMoments & moments)
+std::string MomentsRecognizer::Recognize(fe::ComplexMoments& moments)
 {
 	Mat output;
 	pAnn->predict(MomentsToInput(moments), output);
@@ -63,4 +63,3 @@ bool MomentsRecognizer::Read(std::string filename)
 	fs.release();
 	return true;
 }
-

@@ -24,12 +24,18 @@
     <ClCompile Include="MomentsRecognizer.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="MomentsRecognizer_My.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MomentsHelper.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="MomentsRecognizer.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="MomentsRecognizer_My.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>

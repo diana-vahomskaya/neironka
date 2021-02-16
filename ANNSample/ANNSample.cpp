@@ -23,7 +23,7 @@ std::ostream& operator << (std::ostream& out, std::vector < T > v) // перег
 
 int main()
 {
-	vector<int> configuration({ 2, 10, 10, 1 });
+	vector<size_t> configuration({ 2, 10, 10, 1 });
 	auto network = CreateNeuralNetwork(configuration, ANN::ANeuralNetwork::POSITIVE_SYGMOID); // создаем нейронную сеть
 
 	network->Load(network_file);  // читаем нейронную сеть из файла

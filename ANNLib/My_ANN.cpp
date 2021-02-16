@@ -4,7 +4,162 @@
 #include <My_ANN.h>
 
 
-std::shared_ptr<ANN::ANeuralNetwork> ANN::CreateNeuralNetwork( // Создать нейронную сеть
+ANN::Network::Network(
+	std::vector<size_t>& configuration,
+	ANN::ANeuralNetwork::ActivationType activation_type,
+	float scale
+)
+{
+	this->configuration = configuration;
+	this->activation_type = activation_type;
+	this->scale = scale;
+}
+
+
+std::shared_ptr<ANN::ANeuralNetwork> ANN::CreateNeuralNetwork(
+	std::vector<size_t>& configuration,
+	ANN::ANeuralNetwork::ActivationType activation_type,
+	float scale
+)
+{
+	return std::make_shared<ANN::Network>(configuration, activation_type, scale);
+}
+
+
+std::string ANN::Network::GetType()
+{
+	return "Neural network implementation by Diana Vahomskaya";
+}
+
+
+std::vector<float> ANN::Network::Predict(std::vector<float>& input)
+{
+	std::vector<float> result, buffer = input;
+	for (size_t layer_idx = 0; layer_idx < (configuration.size() - 1); layer_idx++)
+	{
+		result.resize(configuration[layer_idx + 1]);
+		for (size_t to_idx = 0; to_idx < configuration[layer_idx + 1]; to_idx++)
+		{
+			result[to_idx] = 0.0f;
+			for (size_t from_idx = 0; from_idx < configuration[layer_idx]; from_idx++)
+				result[to_idx] += buffer[from_idx] * weights[layer_idx][from_idx][to_idx];
+			result[to_idx] = Activation(result[to_idx]);
+		}
+		buffer = result;
+	}
+	return result;
+}
+
+
+float ANN::BackPropTraining(
+	std::shared_ptr<ANN::ANeuralNetwork> ann,
+	std::vector<std::vector<float>>& inputs,
+	std::vector<std::vector<float>>& outputs,
+	int maxIters,
+	float eps,
+	float speed,
+	bool std_dump
+)
+{
+	float err = 0.0;
+	for (size_t j = 0; j < inputs.size(); j++)
+	{
+		std::vector<float> result = ann->Predict(inputs[j]);
+		for (size_t i = 0; i < result.size(); i++)
+			err += (result[i] - outputs[j][i]) * (result[i] - outputs[j][i]);
+	}
+	err *= 0.5f;
+
+	size_t Iters = 0;
+	do {
+		err = 0.0;
+		for (size_t j = 0; j < inputs.size(); j++)
+			err += BackPropTrainingIteration(ann, inputs[j], outputs[j], speed);
+		err /= (float)(inputs.size());
+
+		Iters++;
+		if (std_dump && (Iters % 100 == 0)) printf("\t%i: error %.4f\n", Iters, err);
+
+		if (err < eps) break;
+	} while (Iters < maxIters);
+
+	printf("\t%i: error %.4f\n", Iters, err);
+	ann->is_trained = true;
+	return err;
+}
+
+
+float ANN::BackPropTrainingIteration(
+	std::shared_ptr<ANN::ANeuralNetwork> ann,
+	const std::vector<float>& input,
+	const std::vector<float>& output,
+	float speed
+)
+{
+	// Получение входных и выходных значений всех нейронов:
+	std::vector<std::vector<float>> buffers = std::vector<std::vector<float>>(ann->configuration.size());
+	buffers[0] = input;
+	for (size_t layer_idx = 1; layer_idx < buffers.size(); layer_idx++)
+	{
+		buffers[layer_idx] = std::vector<float>(ann->configuration[layer_idx]);
+		for (size_t to_idx = 0; to_idx < buffers[layer_idx].size(); to_idx++)
+		{
+			buffers[layer_idx][to_idx] = 0.0f;
+			for (size_t from_idx = 0; from_idx < buffers[layer_idx - 1].size(); from_idx++)
+				buffers[layer_idx][to_idx] += buffers[layer_idx - 1][from_idx] * ann->weights[layer_idx - 1][from_idx][to_idx];
+			buffers[layer_idx][to_idx] = ann->Activation(buffers[layer_idx][to_idx]);
+		}
+	}
+
+	// Корректировка весов нейронов выходного слоя:
+	std::vector<float> deltas = std::vector<float>(ann->configuration.back());
+	size_t corr_idx = ann->weights.size() - 1;
+	for (size_t to_idx = 0; to_idx < ann->configuration[corr_idx + 1]; to_idx++)
+	{
+		deltas[to_idx] = (buffers[corr_idx + 1][to_idx] - output[to_idx]);
+		deltas[to_idx] *= ann->ActivationDerivative(buffers[corr_idx + 1][to_idx]);
+
+		for (size_t from_idx = 0; from_idx < ann->configuration[corr_idx]; from_idx++)
+			ann->weights[corr_idx][from_idx][to_idx] -= speed * deltas[to_idx] * buffers[corr_idx][from_idx];
+	}
+
+	// Корректировка весов нейронов внутренних слоёв:
+	while (corr_idx > 0)
+	{
+		corr_idx--;
+		std::vector<float> deltas_new = std::vector<float>(ann->configuration[corr_idx + 1]);
+		for (size_t to_idx = 0; to_idx < ann->configuration[corr_idx + 1]; to_idx++)
+		{
+			deltas_new[to_idx] = 0.0;
+			for (size_t k = 0; k < ann->configuration[corr_idx + 2]; k++)
+				deltas_new[to_idx] += deltas[k] * ann->weights[corr_idx + 1][to_idx][k];
+			deltas_new[to_idx] *= ann->ActivationDerivative(buffers[corr_idx + 1][to_idx]);
+
+			for (size_t from_idx = 0; from_idx < ann->configuration[corr_idx]; from_idx++)
+				ann->weights[corr_idx][from_idx][to_idx] -= speed * deltas_new[to_idx] * buffers[corr_idx][from_idx];
+		}
+		deltas = deltas_new;
+	}
+
+	// Получение нового выхода нейронной сети:
+	buffers[0] = input;
+	for (size_t layer_idx = 1; layer_idx < buffers.size(); layer_idx++)
+	{
+		for (size_t to_idx = 0; to_idx < buffers[layer_idx].size(); to_idx++)
+		{
+			buffers[layer_idx][to_idx] = 0.0f;
+			for (size_t from_idx = 0; from_idx < buffers[layer_idx - 1].size(); from_idx++)
+				buffers[layer_idx][to_idx] += buffers[layer_idx - 1][from_idx] * ann->weights[layer_idx - 1][from_idx][to_idx];
+			buffers[layer_idx][to_idx] = ann->Activation(buffers[layer_idx][to_idx]);
+		}
+	}
+	// Сравнение полученного выхода с исходными данными:
+	float err = 0.0f;
+	for (size_t i = 0; i < buffers.back().size(); i++)
+		err += (buffers.back()[i] - output[i]) * (buffers.back()[i] - output[i]);
+	return 0.5f * err;
+}
+/*std::shared_ptr<ANN::ANeuralNetwork> ANN::CreateNeuralNetwork( // Создать нейронную сеть
 	std::vector<int>& configuration,
 	ANeuralNetwork::ActivationType activation_type)
 {
@@ -80,27 +235,28 @@ float ANN::BackPropTrain //обучение сети методом обратн
 		{
 			std::vector < std::vector < float > > layer_outputs(ann->weights.size()); // выход каждого нейрона (кол-во слоев)
 
-			// прогонка вперед
+			// делаем прогонку вперед
 
 			std::vector < float > in = inputs[i];
 			std::vector < float > out;
 
 			for (int t = 0; t < ann->weights.size(); t++) // запоминаем все выходы
 			{
-				out.resize(ann->weights[t].size() - 1);
-				layer_outputs[t].resize(ann->weights[t].size() - 1);
+				out.resize(ann->weights[t].size() - 1); //изменяем размер выходов 
+				layer_outputs[t].resize(ann->weights[t].size() - 1);//изменяем размер кол-ва слоев 
 
 				for (int j = 0; j < ann->weights[t].size() - 1; j++)
 				{
-					float neuron_input = ann->weights[t][j][in.size()];
-					for (int k = 0; k < in.size(); k++)
+					float neuron_input = ann->weights[t][j][in.size()]; //входные нейроны
+					for (int k = 0; k < in.size(); k++)// цикл по связям
 					{
-						neuron_input += in[k] * ann->weights[t][j][k];
+						neuron_input += in[k] * ann->weights[t][j][k]; //каждый входной нейрон отправляет полученный сигнал всем нейронам в след.слое(скрытом) 
+						//- суммирование взвешенных входящих сигналов
 					}
-					layer_outputs[t][j] = ann->Activation(neuron_input);
-					out[j] = layer_outputs[t][j];
+					layer_outputs[t][j] = ann->Activation(neuron_input); //применяем активационную функцию
+					out[j] = layer_outputs[t][j]; // посылем результат всем элементам след.слоя (выходного)
 				}
-				in.swap(out);
+				in.swap(out);//вход становится выходом
 			}
 
 
@@ -108,18 +264,19 @@ float ANN::BackPropTrain //обучение сети методом обратн
 
 			std::vector < float > delta_0(output.size()); //  первая дельта для выходного нейрона
 
+			//Вычисление ошибки
 			for (int j = 0; j < output.size(); j++)
 			{
 				float diff = outputs[i][j] - output[j]; // выход ист - вход плучен
 				err += diff * diff; // квадратичная ошибка
-				delta_0[j] = diff * ann->ActivationDerivative(output[j]); // получаем первую дельту
+
+				//вычисление корректировки смещения 
+				delta_0[j] = diff * ann->ActivationDerivative(output[j]); // получаем первую дельту и посылает нейронам в пред.слое
 			}
 
 			// прогонка назад 
-			std::vector < float > in1 = delta_0; // начало - конец
+			std::vector < float > in1 = delta_0; // начало становится концом
 			std::vector < float > out1;
-
-			//float moment = 0.01; // момент
 
 			for (int p = ann->weights.size() - 1; p-- > 0;) // цикл по слоям (только до предпоследнего слоя) 
 			{
@@ -130,12 +287,15 @@ float ANN::BackPropTrain //обучение сети методом обратн
 					float delta_neuron = 0;
 					for (int k = 0; k < in1.size(); k++) // цикл по связям
 					{
+						//каждый скрытый нейрон суммирует входящие ошибки (от нейронов в предыдущем слое)
 						delta_neuron += in1[k] * ann->weights[p + 1][k][j]; // p+1 берем веса с последнего слоя ( сумма произведений весов на дельту)
 					}
+					//вычисляем величину ошибки умножая полученное значение на производную активационной функции
 					delta_neuron *= ann->ActivationDerivative(layer_outputs[p][j]); // умножаем на производную от соотв выхода
 					out1[j] = delta_neuron;
 				}
 
+				//Так же вычисляем величину на которую изменится вес связи
 				for (int k = 0; k < in1.size(); k++) // по связям
 				{
 					for (int j = 0; j < ann->weights[p].size() - 1; j++) //10-1 нейроны
@@ -148,21 +308,20 @@ float ANN::BackPropTrain //обучение сети методом обратн
 				}
 				in1.swap(out1);
 			}
-			//+ moment * weight_deltas[p + 1][k][j]
-			//+ moment * weight_deltas[p + 1][k][ann->weights[p + 1][k].size() - 1]
-			for (int k = 0; k < in1.size(); k++) // для входных нейронов (по нейронам)
+
+			//Изменение весов
+			for (int k = 0; k < in1.size(); k++) // цикл для входных нейронов (по нейронам)
 			{
-				for (int j = 0; j < inputs[i].size(); ++j) // по связям
+				for (int j = 0; j < inputs[i].size(); ++j) // цикл по связям
 				{
-					weight_deltas[0][k][j] = speed * inputs[i][j] * in1[k];
+					weight_deltas[0][k][j] = speed * inputs[i][j] * in1[k];//
 					ann->weights[0][k][j] += weight_deltas[0][k][j];
 				}
-				weight_deltas[0][k][ann->weights[0][k].size() - 1] = speed * in1[k]; //нейрон смещения
-				ann->weights[0][k][ann->weights[0][k].size() - 1] += weight_deltas[0][k][ann->weights[0][k].size() - 1];
+				weight_deltas[0][k][ann->weights[0][k].size() - 1] = speed * in1[k]; // рассчет веса скрытых нейроновб каждый скрытый нейрон изменяет 
+				//веса своих связей с элементам смещения и выходными нейронами
+				ann->weights[0][k][ann->weights[0][k].size() - 1] += weight_deltas[0][k][ann->weights[0][k].size() - 1];//получение нового веса
 			}
 
-			//+ moment * weight_deltas[0][k][j]
-			//+ moment * weight_deltas[0][k][ann->weights[0][k].size() - 1]
 			if (std_dump && ((iterations % (max_iters / 100)) == 0)) // вывод итераций 
 			{
 				std::cout << iterations << ": " << err << std::endl;
@@ -182,3 +341,4 @@ float ANN::BackPropTrain //обучение сети методом обратн
 
 }
 
+*/
